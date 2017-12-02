@@ -31,9 +31,7 @@ $(document).ready(function() {
 
     $('#message').empty();
     $('#loading').show();
-
     var result = successfulUpload();
-
   });
 
   $('#file').change(function() {
@@ -105,7 +103,7 @@ function getLabels(encodedFile) {
 		  '"requests": [' +
 		    '{' +
 		      '"image": {' +
-		        '"content":"' + file.substring(("data:image/jpeg;base64,").length, file.length) + '"' +
+		        '"content":"' + encodedFile.substring(("data:image/jpeg;base64,").length, encodedFile.length) + '"' +
 		      '},' +
 		      '"features": [' +
 		        '{'+
@@ -124,8 +122,8 @@ function getLabels(encodedFile) {
 			"Content-Type":"application/json"
 		},
 		success:function(data, textStatus,jqXHR){
-			console.log("YEAH");
-			returnLabels();
+			console.log(data);
+			returnLabels(data);
 		}, 
 		error:function(jqXHR, textStatus, errorThrown) {
 			console.log("NOOOOOO");
@@ -134,6 +132,6 @@ function getLabels(encodedFile) {
 	});
 };
 
-function returnLabels() {
-	console.log("make get call");
-}
+function returnLabels(data) {
+  
+};
