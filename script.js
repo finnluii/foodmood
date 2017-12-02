@@ -48,13 +48,13 @@ $(document).ready(function() {
     $('#message').empty();
 
     var file = this.files[0];
-    var match = ["image/jpeg", "image/png", "image/jpg"];
+    var match = ["image/jpeg", "image/jpg"];
 
     if ( !( (file.type == match[0]) || (file.type == match[1]) || (file.type == match[2]) ) )
     {
       noPreview();
 
-      $('#message').html('<div class="alert alert-warning" role="alert">Unvalid image format. Allowed formats: JPG, JPEG, PNG.</div>');
+      $('#message').html('<div class="alert alert-warning" role="alert">Unvalid image format. Allowed formats: JPG, JPEG.</div>');
 
       return false;
     }
@@ -129,12 +129,10 @@ function getLabels(encodedFile) {
 			"Content-Type":"application/json"
 		},
 		success:function(data, textStatus,jqXHR){
-			console.log(data);
 			returnLabels(data);
       process(data);
 		}, 
 		error:function(jqXHR, textStatus, errorThrown) {
-			console.log("NOOOOOO");
 		}
 
 	});
@@ -142,9 +140,9 @@ function getLabels(encodedFile) {
 
 function returnLabels(data) {
 	var entries = "";
-  for (var i = 0; i < data.responses["0"].labelAnnotations.length; i++) {
+  for (var i = 1; i < 6; i++) {
     entries += "<tr>"
-      + "<td>" + (i+1).toString() + "</td>"
+      + "<td>" + (i).toString() + "</td>"
       + "<td>" + data.responses["0"].labelAnnotations[i].description + "</td>"
       + "</tr>";
   }
@@ -168,13 +166,17 @@ function getNDBNO(parameter) {
       "Content-Type":"application/json"
     },
     success:function(data){
-      console.log("retrieved NDBNO!")
-      searchUSDA(data.list.item["0"].ndbno);
+      searchUSDA(data);
     }
   });
 }
 
-function searchUSDA(ndbno){
+function searchUSDA(data){
+  var ndbno = data.list.item["0"].ndbno;
+  var foodname = data.list.item["0"].name;
+
+  $('#foodname').html("<p>" + "Nutritional information for: <strong>" + foodname + "</strong>.</p");
+
   var request = "https://api.nal.usda.gov/ndb/reports/?ndbno=" + ndbno + "&type=b&format=json&api_key=" + USDA_API_KEY;
   $.ajax({
     type:'GET',
@@ -184,14 +186,12 @@ function searchUSDA(ndbno){
       "Content-Type":"application/json"
     },
     success:function(data){
-      console.log("retrieved nutritional info");
       publishNutrition(data.report.food.nutrients);
     }
   });
 }
 
 function publishNutrition(nutrients){
-  console.log(nutrients);
   var entries = "";
   for (var i = 0; i < nutrients.length; i++) {
     entries += "<tr>"
@@ -201,5 +201,6 @@ function publishNutrition(nutrients){
       + "</tr>";
   }
   $('#nutrient-info').html(entries);
+  $('#foodinfo').show();
 }
 
