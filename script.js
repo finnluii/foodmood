@@ -180,12 +180,14 @@ function searchUSDA(ndbno){
 
 function publishNutrition(nutrients){
   console.log(nutrients);
-  $('#nutrient-info').html(
-  + "<tr>"
-  + "<td>test</td>"
-  + "<td>test</td>"
-  + "<td>test</td>"
-  + "</tr>"
-  );
+  var entries = "";
+  for (var i = 0; i < nutrients.length; i++) {
+    entries += "<tr>"
+      + "<td>" + nutrients[i].name + "</td>"
+      + "<td>" + nutrients[i].value + "</td>"
+      + "<td>" + nutrients[i].unit + "</td>"
+      + "</tr>";
+  }
+  $('#nutrient-info').html(entries);
 }
 
