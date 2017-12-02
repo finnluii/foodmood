@@ -24,6 +24,10 @@ function upload() {
 }
 
 $(document).ready(function() {
+  $("#upload-button").click(function() {
+        $("#nutrients").show("slow");
+        $("#google").show("slow");
+  });
 
   var maxsize = 500 * 1024; // 500 KB
 
@@ -69,6 +73,7 @@ $(document).ready(function() {
     var reader = new FileReader();
     reader.onload = selectImage;
     reader.readAsDataURL(this.files[0]);
+    
 
   });
 
@@ -135,8 +140,15 @@ function getLabels(encodedFile) {
 	});
 };
 
-function returnLabels() {
-	console.log("make get call");
+function returnLabels(data) {
+	var entries = "";
+  for (var i = 0; i < data.responses["0"].labelAnnotations.length; i++) {
+    entries += "<tr>"
+      + "<td>" + (i+1).toString() + "</td>"
+      + "<td>" + data.responses["0"].labelAnnotations[i].description + "</td>"
+      + "</tr>";
+  }
+  $('#google-result').html(entries);
 }
 
 function process(data) {
