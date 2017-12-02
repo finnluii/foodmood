@@ -140,7 +140,7 @@ function returnLabels() {
 }
 
 function process(data) {
-  var result = data.responses["0"].labelAnnotations["0"].description;
+  var result = data.responses["0"].labelAnnotations["1"].description;
   getNDBNO(result);
 }
 
@@ -179,6 +179,13 @@ function searchUSDA(ndbno){
 }
 
 function publishNutrition(nutrients){
-  
+  console.log(nutrients);
+  $('#nutrient-info').html(
+  + "<tr>"
+  + "<td>test</td>"
+  + "<td>test</td>"
+  + "<td>test</td>"
+  + "</tr>"
+  );
 }
 
