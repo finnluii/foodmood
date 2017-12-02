@@ -2,6 +2,10 @@
 
 var YOUR_API_KEY="AIzaSyCqgQ4XCl5Cvg29n-7nRCucKToYx2qKnr0";
 
+var USDA_API_KEY="1uYicle8ppjaYavGr5OZtIl3BhJ41mAEGB0mMRRR";
+
+"https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?api_key=" + USDA_API_KEY + "";
+
 function noPreview() {
   $('#image-preview-div').css("display", "none");
   $('#preview-img').attr('src', 'noimage');
@@ -31,7 +35,8 @@ $(document).ready(function() {
 
     $('#message').empty();
     $('#loading').show();
-    var result = successfulUpload();
+
+    successfulUpload();
   });
 
   $('#file').change(function() {
@@ -80,16 +85,13 @@ function successfulUpload(){
   );
 
   evaluatePicture();
-  return true;
 }
-
 
 function evaluatePicture() {
 	var file = $('#file')[0].files[0];
 	var reader = new FileReader()
 	reader.onloadend = processFile
 	reader.readAsDataURL(file);
-	returnLabels();
 };
 
 function processFile(event) {
@@ -124,6 +126,7 @@ function getLabels(encodedFile) {
 		success:function(data, textStatus,jqXHR){
 			console.log(data);
 			returnLabels(data);
+      process(data);
 		}, 
 		error:function(jqXHR, textStatus, errorThrown) {
 			console.log("NOOOOOO");
@@ -132,6 +135,50 @@ function getLabels(encodedFile) {
 	});
 };
 
-function returnLabels(data) {
+function returnLabels() {
+	console.log("make get call");
+}
+
+function process(data) {
+  var result = data.responses["0"].labelAnnotations["0"].description;
+  getNDBNO(result);
+}
+
+//USDA API STUFF
+function getNDBNO(parameter) {
+  var parameter_clean = parameter.replace(" ", "_");
+  var request = "https://api.nal.usda.gov/ndb/search/?format=json&q=" + parameter_clean + "&sort=r&max=1&offset=0&api_key=" + USDA_API_KEY;
+  $.ajax({
+    type:'GET',
+    url:request,
+    dataType:"JSON",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    success:function(data){
+      console.log("retrieved NDBNO!")
+      searchUSDA(data.list.item["0"].ndbno);
+    }
+  });
+}
+
+function searchUSDA(ndbno){
+  var request = "https://api.nal.usda.gov/ndb/reports/?ndbno=" + ndbno + "&type=b&format=json&api_key=" + USDA_API_KEY;
+  $.ajax({
+    type:'GET',
+    url:request,
+    dataType:"JSON",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    success:function(data){
+      console.log("retrieved nutritional info");
+      publishNutrition(data.report.food.nutrients);
+    }
+  });
+}
+
+function publishNutrition(nutrients){
   
-};
+}
+
