@@ -30,6 +30,10 @@ function selectImage(e) {
   $('#preview-img').css('max-width', '550px');
 }
 
+function upload() {
+  return true;
+}
+
 $(document).ready(function() {
 
   var maxsize = 500 * 1024; // 500 KB
@@ -43,24 +47,12 @@ $(document).ready(function() {
     $('#message').empty();
     $('#loading').show();
 
-    // $.ajax({
-    //   url: "upload-image.php",
-    //   type: "POST",
-    //   data: new FormData(this),
-    //   contentType: false,
-    //   cache: false,
-    //   processData: false,
-    //   success: function(data)
-    //   {
-    //     $('#loading').hide();
-    //     $('#message').html(data);
-    //   }
-    // });
+    var result = successfulUpload();
 
   });
 
   $('#file').change(function() {
-
+    $('upload-button').attr('disabled', '');
     $('#message').empty();
 
     var file = this.files[0];
@@ -90,12 +82,24 @@ $(document).ready(function() {
     reader.onload = selectImage;
     reader.readAsDataURL(this.files[0]);
 
-    });
-
-  $("#upload-button").click(function() {
-      evaluatePicture();
   });
+
 });
+
+function successfulUpload(){
+  $('#loading').hide();
+  $('#message').html("<div class=\"alert alert-success\" role=\"alert\">"
+    + "<p>Image uploaded successful</p>"
+    + "<p><strong>File Name: " + file.name + "</strong></p>"
+    + "<p><strong>Type: " + file.type + "</strong></p>"
+    + "<p>Size: <strong>: " + file.size + "</strong></p>"
+    + "</div>"
+  );
+
+  evaluatePicture();
+  return true;
+}
+
 
 function evaluatePicture() {
 	var file = $('#file')[0].files[0];

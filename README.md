@@ -2,7 +2,7 @@
 how many calories does a picture have
 
 
-#how to run
+# how to run
 
 npm install http-server -g
 
