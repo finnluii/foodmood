@@ -2,21 +2,6 @@
 
 var YOUR_API_KEY="AIzaSyCqgQ4XCl5Cvg29n-7nRCucKToYx2qKnr0";
 
-var json='{' +
-  '"requests": [' +
-    '{' +
-      '"image": {' +
-        '"content": "/9j/7QBEUGhvdG9zaG9...base64-encoded-image-content...fXNWzvDEeYxxxzj/Coa6Bax//Z"'+
-      '},' +
-      '"features": [' +
-        '{'+
-          '"type": "LABEL_DETECTION"'+
-        '}' +
-      ']' +
-    '}' +
-  ']' +
-'}';
-
 function noPreview() {
   $('#image-preview-div').css("display", "none");
   $('#preview-img').attr('src', 'noimage');
@@ -102,25 +87,49 @@ function evaluatePicture() {
 	var reader = new FileReader()
 	reader.onloadend = processFile
 	reader.readAsDataURL(file);
-	// $.ajax({
-	// 	type:'POST',
-	// 	url:"https://vision.googleapis.com/v1/images:annotate?key=" + YOUR_API_KEY,
-	// 	dataType:"JSON",
-	// 	data:json,
-	// 	headers:{
-	// 		"Content-Type":"application/json"
-	// 	},
-	// 	success:function(data, textStatus,jqXHR){
-	// 		blehfunction();
-	// 	}, 
-	// 	error:function(jqXHR, textStatus, errorThrown) {
-	// 		console.log('errorrorsors');
-	// 	}
-
-	// });
-}
+	returnLabels();
+};
 
 function processFile(event) {
   var encodedFile = event.target.result;
-  console.log("encodedFile:" + encodedFile);
+  getLabels(encodedFile);
+};
+
+function getLabels(encodedFile) {
+
+	var json='{' +
+		  '"requests": [' +
+		    '{' +
+		      '"image": {' +
+		        '"content":"' + file.substring(("data:image/jpeg;base64,").length, file.length) + '"' +
+		      '},' +
+		      '"features": [' +
+		        '{'+
+		          '"type": "LABEL_DETECTION"'+
+		        '}' +
+		      ']' +
+		    '}' +
+		  ']' +
+		'}';
+	$.ajax({
+		type:'POST',
+		url:"https://vision.googleapis.com/v1/images:annotate?key=" + YOUR_API_KEY,
+		dataType:"JSON",
+		data:json,
+		headers:{
+			"Content-Type":"application/json"
+		},
+		success:function(data, textStatus,jqXHR){
+			console.log("YEAH");
+			returnLabels();
+		}, 
+		error:function(jqXHR, textStatus, errorThrown) {
+			console.log("NOOOOOO");
+		}
+
+	});
+};
+
+function returnLabels() {
+	console.log("make get call");
 }
