@@ -1,8 +1,8 @@
 'use strict';
 
-var YOUR_API_KEY="AIzaSyBnbAaMO_TaVmYfLVuVpsj3wkecO6Otais";
+var YOUR_API_KEY=keys.google;
 
-var USDA_API_KEY="1uYicle8ppjaYavGr5OZtIl3BhJ41mAEGB0mMRRR";
+var USDA_API_KEY=keys.usda;
 
 "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?api_key=" + USDA_API_KEY + "";
 
@@ -24,6 +24,7 @@ function upload() {
 }
 
 $(document).ready(function() {
+  console.log("hi");
   $("#upload-button").click(function() {
         $("#nutrients").show("slow");
         $("#google").show("slow");
@@ -105,7 +106,6 @@ function processFile(event) {
 };
 
 function getLabels(encodedFile) {
-
 	var json='{' +
 		  '"requests": [' +
 		    '{' +

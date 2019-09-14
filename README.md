@@ -4,6 +4,18 @@ how many calories does a picture have
 
 # how to run
 
+1. Please first sign up for Google Cloud Platform to get your Google Vision API Key, available for free on the Google Cloud Platform website. 
+
+2. Please sign up for a USDA API key and paste it into the USDA_API_KEY variable in script.js. This can be done [here.](https://ndb.nal.usda.gov/ndb/doc/index#)
+
+3. Paste the two keys you got from the first 2 steps into a file named *key.js*. The format of the file is:
+```
+var keys = {
+	google: "this_is_my_gcp_api_key",
+	usda: "this_is_my_usda_key"
+};
+```
+
 npm install http-server -g
 
 http-server . -p 8000
