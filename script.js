@@ -1,6 +1,6 @@
 'use strict';
 
-var YOUR_API_KEY="AIzaSyCqgQ4XCl5Cvg29n-7nRCucKToYx2qKnr0";
+var YOUR_API_KEY="AIzaSyBnbAaMO_TaVmYfLVuVpsj3wkecO6Otais";
 
 var USDA_API_KEY="1uYicle8ppjaYavGr5OZtIl3BhJ41mAEGB0mMRRR";
 

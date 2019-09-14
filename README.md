@@ -10,6 +10,8 @@ http-server . -p 8000
 
 http://localhost:8000/main.html
 
+On Start-up:![main.html](https://i.imgur.com/sJJLycJ.png) After uploading a picture of food: ![After food is uploaded](https://i.imgur.com/iuPpdTe.png)
+
 
 # CREDITS
 
